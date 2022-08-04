@@ -11,7 +11,7 @@ let tasks= [];
 let workTasks = [];
 console.log(date())
 app.get('/' , (req , res) => {
-    res.render("list" , {kindOfDay : day , newTask : tasks , taskLen : tasks.length , taskArray : tasks});
+    res.render("list" , {kindOfDay : date() , newTask : tasks , taskLen : tasks.length , taskArray : tasks});
 })
 
 app.post('/submit' , (req , res) => {
