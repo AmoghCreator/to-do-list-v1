@@ -5,8 +5,9 @@ const app = express();
 app.set('view engine' , 'ejs');
 
 app.use(bodyParser.urlencoded({etended:true}));
-
-var tasks= [];
+app.use(express.static('public'));
+let tasks= [];
+let workTasks = [];
 
 app.get('/' , (req , res) => {
     var today  = new Date();
@@ -17,9 +18,30 @@ app.get('/' , (req , res) => {
 })
 
 app.post('/submit' , (req , res) => {
+    console.log(req.body);
+    if(req.body.button == 'work') {
+        let task = req.body.task;
+        workTasks.push(task)
+        res.redirect("/work");
+    }  
+    
+
+    if(req.body.button2 == 'work') {
+        workTasks.pop();
+        res.redirect("/work");
+    } else {
+        tasks.pop();   
+    }
+})
+
+app.get('/work' , (req , res) => {
+    res.render("list" , {kindOfDay : "work" , taskArray : workTasks , taskLen : workTasks.length})    
+})
+
+app.post('/work' , (req , res) => {
     task = req.body.task;
-    tasks.push(task);
-    res.redirect("/")
+    workTasks.push(task);
+    res.redirect("/work");
 })
 
 app.listen(3000 , () => {
